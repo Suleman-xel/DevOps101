@@ -7,31 +7,34 @@ on:
 
 jobs:
   build:
+    name: Deploy on Staging
     runs-on: ubuntu-latest
 
     steps:
-      
       - name: Checkout Code
         uses: actions/checkout@v2  
-  
-      - name: Build Application
-        run: |
-          npm install
-          npm run build
-      
-      - name: Zip Build Artifacts
-        run: |
-          zip -r build.zip build
-      
-    
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: react-app
-          path: build.zip  # Path to your build artifact
 
-  
-      - name: Clean up
-        run: |
-          rm build.zip
+      - name: Setup Node Enviroment
+        uses: actions/setup-node@v4
+        with:
+          node-version: latest
+
+      - name: Installing Dependiences
+        run: npm install
+
+      - name: Super-Linter
+        uses: super-linter/super-linter@v5.7.2
+        with:
+          VALIDATE_CSS: 'false'
+          
+
+      - name: Build 
+        run: npm run build --if-present
+
+      - name: Running Test Case
+        run: npm test
+      
+      
+      
+      
       
