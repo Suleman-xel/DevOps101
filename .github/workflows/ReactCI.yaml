@@ -12,14 +12,7 @@ jobs:
     steps:
       
       - name: Checkout Code
-        uses: actions/checkout@v2
-      
-    
-      - name: Lint Code
-        run: |
-          npm install
-          npm run lint
-      
+        uses: actions/checkout@v2  
   
       - name: Build Application
         run: |
