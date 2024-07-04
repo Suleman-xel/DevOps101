@@ -31,6 +31,13 @@ jobs:
 
       - name: Running Test Case
         run: npm test
+
+      - name: Archive Production Build
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: production-build
+          path: build.zip
+          overwrite: true
       
       
       
