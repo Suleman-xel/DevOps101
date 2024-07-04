@@ -22,10 +22,8 @@ jobs:
       - name: Installing Dependiences
         run: npm install
 
-      - name: Super-Linter
-        uses: super-linter/super-linter@v5.7.2
-        with:
-          VALIDATE_CSS: 'false'
+      - name: Run ESLint
+        run: npx eslint .
           
 
       - name: Build 
