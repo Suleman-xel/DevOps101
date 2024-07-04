@@ -1,0 +1,44 @@
+name: React CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      
+    
+      - name: Lint Code
+        run: |
+          npm install
+          npm run lint
+      
+  
+      - name: Build Application
+        run: |
+          npm install
+          npm run build
+      
+      - name: Zip Build Artifacts
+        run: |
+          zip -r build.zip build
+      
+    
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: react-app
+          path: build.zip  # Path to your build artifact
+
+  
+      - name: Clean up
+        run: |
+          rm build.zip
+      
