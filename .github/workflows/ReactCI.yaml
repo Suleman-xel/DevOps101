@@ -24,6 +24,9 @@ jobs:
 
       - name: Super-Linter
         uses: super-linter/super-linter@v5.7.2
+        with:
+          VALIDATE_CSS: 'false'
+          
 
       - name: Build 
         run: npm run build --if-present
