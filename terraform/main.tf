@@ -60,7 +60,7 @@ resource "aws_instance" "DevOps_instance" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.DevOps_subnet.id
-
+  key_name      = "devopsKEY"
   tags = {
     Name = "DevOpsInstance"
   }
