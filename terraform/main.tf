@@ -18,6 +18,10 @@ resource "aws_vpc" "DevOps_vpc" {
   cidr_block = "10.0.0.0/16"
   enable_dns_support = true
   enable_dns_hostnames = true
+
+  tags = {
+    Name = "DevOpsVPC"
+  }
 }
 
 
@@ -26,6 +30,10 @@ resource "aws_subnet" "DevOps_subnet" {
   vpc_id     = aws_vpc.example_vpc.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "us-east-1a"
+
+  tags = {
+    Name = "DevOpsSUBNET"
+  }
 }
 
 
@@ -33,6 +41,7 @@ resource "aws_subnet" "DevOps_subnet" {
 # Fetching the AMI ID
 data "aws_ami" "ubuntu" {
   most_recent = true
+  owners = ["099720109477"] 
 
   filter {
     name   = "name"
@@ -44,7 +53,6 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"]  # Canonical
 }
 
 
