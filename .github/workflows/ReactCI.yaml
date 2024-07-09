@@ -31,6 +31,10 @@ jobs:
       - name: Terraform Plan
         working-directory: terraform
         run: terraform plan -out=tfplan
+      
+      - name: Terraform Pull
+        working-directory: terraform
+        run: git state pull
 
       - name: Terraform Apply
         working-directory: terraform
