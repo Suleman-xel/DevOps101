@@ -27,7 +27,7 @@ resource "aws_vpc" "DevOps_vpc" {
 
 # Creating Subnets
 resource "aws_subnet" "DevOps_subnet" {
-  vpc_id     = aws_vpc.example_vpc.id
+  vpc_id     = aws_vpc.DevOps_vpc.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "us-east-1a"
 
@@ -59,7 +59,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "DevOps_instance" {
   ami           = data.aws.ami.ubuntu.id
   instance_type = "t2.micro"
-  subnet_id     = aws_subnet.example_subnet.id
+  subnet_id     = aws_subnet.DevOps_subnet.id
 
   tags = {
     Name = "DevOpsInstance"
