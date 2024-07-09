@@ -22,10 +22,8 @@ jobs:
       - name: Installing Dependiences
         run: npm install
 
-      - name: Super-Linter
-        uses: super-linter/super-linter@v5.7.2
-        with:
-          VALIDATE_CSS: 'false'
+      - name: Run ESLint
+        run: npx eslint .
           
 
       - name: Build 
@@ -33,6 +31,13 @@ jobs:
 
       - name: Running Test Case
         run: npm test
+
+      - name: Archive Production Build
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: production-build
+          path: build.zip
+          overwrite: true
       
       
       
