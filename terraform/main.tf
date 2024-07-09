@@ -37,6 +37,38 @@ resource "aws_subnet" "DevOps_subnet" {
   }
 }
 
+
+# Internet Gateway
+resource "aws_internet_gateway" "DevOps_igw" {
+  vpc_id = aws_vpc.DevOps_vpc.id
+
+  tags = {
+    Name = "DevOpsInternetGateway"
+  }
+}
+
+# Create a Route Table
+resource "aws_route_table" "DevOps_rt" {
+  vpc_id = aws_vpc.DevOps_vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.DevOps_igw.id
+  }
+
+  tags = {
+    Name = "DevOpsRouteTable"
+  }
+}
+
+# Associate the Route Table with the Subnet
+resource "aws_route_table_association" "DevOps_rta" {
+  subnet_id      = aws_subnet.DevOps_subnet.id
+  route_table_id = aws_route_table.DevOps_rt.id
+}
+
+
+
 # Fetching the AMI ID
 data "aws_ami" "ubuntu" {
   most_recent = true
