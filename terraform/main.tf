@@ -8,6 +8,7 @@ terraform {
 }
 
 
+
 provider "aws" {
   region = "us-east-1"
 }
@@ -35,8 +36,6 @@ resource "aws_subnet" "DevOps_subnet" {
     Name = "DevOpsSUBNET"
   }
 }
-
-
 
 # Fetching the AMI ID
 data "aws_ami" "ubuntu" {
