@@ -85,7 +85,7 @@ resource "aws_security_group" "DevOps_sg" {
   }
 
   ingress {
-    description = "Allow access to web"
+    description = "Allow access to HTTP"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -136,10 +136,12 @@ resource "aws_instance" "DevOps_instance" {
   tags = {
     Name = "DevOpsInstance"
   }
-
-  # provisioner "local-exec" {
-  #   command = "ansible-playbook -i '${self.public_ip},' --private-key ${var.private_key_path} ansible/playbook.yml"
-  # } 
+  provisioner "local-exec" {
+    command = <<EOT
+      echo "[all]\n${self.public_ip}" > inventory.ini
+      ansible-playbook -i inventory.ini --private-key keypair.pem ansible/playbook.yml
+    EOT
+  }
   
 }
 

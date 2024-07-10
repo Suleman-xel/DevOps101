@@ -1,27 +1,55 @@
 ---
-- hosts: all
+- name: Configure EC2 instance with Docker, Docker Compose, and Node.js
+  hosts: ec2_instances
   become: yes
-  
+
   tasks:
-    - name: Install Docker
+    - name: Update apt cache
       apt:
-        name: docker.io
-        state: latest
         update_cache: yes
+    - name: Install necessary packages
+      apt:
+        name:
+          - docker.io
+          - docker-compose
+        state: present
 
-    - name: Install Docker Compose
+    - name: Start Docker service
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Install Node.js and npm
       shell: |
-        curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-        chmod +x /usr/local/bin/docker-compose
+        curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+        sudo apt-get install -y nodejs
 
-    - name: Clone and start the React application
-      git:
-        repo: 'https://github.com/yourusername/yourrepository.git'
-        dest: /var/www/reactapp
-      register: git_clone
+    - name: Verify Node.js installation
+      command: node -v
+      register: node_version
 
-    - name: Build and run React app with Docker Compose
-      shell: docker-compose up --build -d
-      args:
-        chdir: /var/www/reactapp/
-      when: git_clone.changed
+    - name: Verify npm installation
+      command: npm -v
+      register: npm_version
+
+    - name: Print Node.js version
+      debug:
+        msg: "Node.js version: {{ node_version.stdout }}"
+        
+    - name: Print npm version
+      debug:
+        msg: "npm version: {{ npm_version.stdout }}"
+    - name: Install necessary npm packages globally
+      npm:
+        name: pm2
+        global: yes
+
+
+
+
+
+
+
+
+

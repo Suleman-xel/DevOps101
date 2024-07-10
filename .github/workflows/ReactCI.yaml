@@ -19,7 +19,14 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: "us-east-1"
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      
+      - name: Create EC2 Key Pair file
+        run: |
+          echo "${{ secrets.EC2_KEY_PAIR }}" > keypair.pem
+          chmod 600 keypair.pem
+          cat keypair.pem
 
       - name: Set up Terraform Enviroment
         uses: hashicorp/setup-terraform@v1
@@ -39,24 +46,8 @@ jobs:
       - name: Terraform Apply
         working-directory: terraform
         run: terraform apply -auto-approve
-      
-      - name: Run playbook
-        uses: dawidd6/action-ansible-playbook@v2
-        with:
-          # Required, playbook filepath
-          playbook: playbook.yaml
-          # Optional, directory where playbooks live
-          directory: ./ansible
-          # Optional, SSH private key
-          key: ${{secrets.EC2_KEY_PAIR}}
-          # Optional, literal inventory file contents
-          inventory: |
-            [all]
-            ec2-184-73-146-186.compute-1.amazonaws.com
 
-          # Optional, SSH known hosts file content
-          # known_hosts: |
-          #   example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+          
           
 
       
