@@ -1,13 +1,14 @@
 ---
 - name: Configure EC2 instance with Docker, Docker Compose, and Node.js
-  hosts: ec2_instances
+  hosts: all
   become: yes
 
   tasks:
     - name: Update apt cache
       apt:
         update_cache: yes
-    - name: Install necessary packages
+
+    - name: Install Docker and Docker Compose
       apt:
         name:
           - docker.io
@@ -20,6 +21,14 @@
         state: started
         enabled: yes
 
+    - name: Verify Docker installation
+      command: docker --version
+      register: docker_version
+
+    - name: Print Docker version
+      debug:
+        msg: "Docker version: {{ docker_version.stdout }}"
+
     - name: Install Node.js and npm
       shell: |
         curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
@@ -29,27 +38,27 @@
       command: node -v
       register: node_version
 
+    - name: Print Node.js version
+      debug:
+        msg: "Node.js version: {{ node_version.stdout }}"
+
     - name: Verify npm installation
       command: npm -v
       register: npm_version
 
-    - name: Print Node.js version
-      debug:
-        msg: "Node.js version: {{ node_version.stdout }}"
-        
     - name: Print npm version
       debug:
         msg: "npm version: {{ npm_version.stdout }}"
-    - name: Install necessary npm packages globally
+
+    - name: Install PM2 globally
       npm:
         name: pm2
         global: yes
 
+    - name: Verify PM2 installation
+      command: pm2 -v
+      register: pm2_version
 
-
-
-
-
-
-
-
+    - name: Print PM2 version
+      debug:
+        msg: "PM2 version: {{ pm2_version.stdout }}"

@@ -8,9 +8,9 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-    
+
     steps:
-    
+
       - name: Fetching the code
         uses: actions/checkout@v2
 
@@ -21,24 +21,32 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      
       - name: Create EC2 Key Pair file
         run: |
           echo "${{ secrets.EC2_KEY_PAIR }}" > keypair.pem
-          chmod 600 keypair.pem
+          chmod 400 keypair.pem
           cat keypair.pem
 
-      - name: Set up Terraform Enviroment
+      - name: Set up Terraform Environment
         uses: hashicorp/setup-terraform@v1
+
+      - name: Install Python
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip
+
+      - name: Install Ansible
+        run: |
+          pip3 install ansible
 
       - name: Terraform Init
         working-directory: terraform
         run: terraform init
-      
+
       - name: Terraform Plan
         working-directory: terraform
         run: terraform plan -out=tfplan
-      
+
       - name: Terraform Pull
         working-directory: terraform
         run: terraform state pull
@@ -46,8 +54,5 @@ jobs:
       - name: Terraform Apply
         working-directory: terraform
         run: terraform apply -auto-approve
-
-          
-          
 
       
