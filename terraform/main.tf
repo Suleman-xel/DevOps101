@@ -153,8 +153,8 @@ resource "aws_instance" "DevOps_instance" {
       cd ..
       ls
       echo "${aws_instance.DevOps_instance.public_ip}" > inventory
-      echo "Sleeping for 60 seconds to allow instance initialization"
-      sleep 60
+      echo "Sleeping for 30 seconds to allow instance initialization"
+      sleep 30
       ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory ./ansible/playbook.yml --private-key ~/.ssh/id_rsa -u ec2-user
       
     EOT
