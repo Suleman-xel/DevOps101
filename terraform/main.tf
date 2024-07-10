@@ -127,7 +127,8 @@ resource "aws_instance" "DevOps_instance" {
   subnet_id     = aws_subnet.DevOps_subnet.id
   key_name      = "devopsKEY"
   vpc_security_group_ids = [aws_security_group.DevOps_sg.id]
-  
+  associate_public_ip_address = true
+
   tags = {
     Name = "DevOpsInstance"
   }
