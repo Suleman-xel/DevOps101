@@ -34,15 +34,15 @@ jobs:
 
 
       - name: Set up Terraform Environment
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
         working-directory: ./terraform
         run: terraform init
 
-      - name: Terraform Pull
-        working-directory: ./terraform
-        run: terraform state pull
+      # - name: Terraform Pull
+      #   working-directory: ./terraform
+      #   run: terraform state pull
 
 
       - name: Terraform Apply
