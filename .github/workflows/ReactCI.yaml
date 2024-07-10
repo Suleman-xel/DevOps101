@@ -25,7 +25,7 @@ jobs:
         run: |
           echo "${{ secrets.EC2_KEY_PAIR }}" > keypair.pem
           chmod 400 keypair.pem
-          cat keypair.pem
+          sudo cat keypair.pem
 
       - name: Set up Terraform Environment
         uses: hashicorp/setup-terraform@v1

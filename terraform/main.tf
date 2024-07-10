@@ -138,8 +138,9 @@ resource "aws_instance" "DevOps_instance" {
   }
   provisioner "local-exec" {
     command = <<EOT
-      echo "[all]\n${self.public_ip}" > inventory.ini
-      ansible-playbook -i inventory.ini --private-key keypair.pem ansible/playbook.yml
+      ls
+      echo "[all]\n${aws_instance.DevOps_instance.public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=keypair.pem" > inventory.ini
+      ansible-playbook -i inventory.ini ansible/playbook.yml
     EOT
   }
   
