@@ -26,7 +26,3 @@
         curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
         sudo apt-get install -y nodejs
 
-    - name: Install PM2 globally
-      npm:
-        name: pm2
-        global: yes
