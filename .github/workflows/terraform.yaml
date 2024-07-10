@@ -28,7 +28,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_KEY_PAIR }}" > ~/.ssh/id_rsa
-          chmod 400 ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
           eval "$(ssh-agent -s)"
           ssh-add ~/.ssh/id_rsa
 
