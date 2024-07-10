@@ -146,21 +146,11 @@ resource "aws_instance" "DevOps_instance" {
 
   provisioner "local-exec" {
     command = <<EOT
-      echo "Current working directory: \$(pwd)"
-      echo "Listing files in current directory:"
+      echo "Current Working Directory: \$"
+      echo "Listing files in dierectory:"
       ls -la
-      echo "Changing to ansible directory..."
-      cd ../ansible
-      echo "Creating ansible directory and inventory file..."
-      mkdir -p .
-      echo "[web]" > inventory
       echo "${self.public_ip}" >> inventory
-      echo "Inventory file created. Listing files in ansible directory:"
-      ls -la
-      echo "Sleeping for 60 seconds to allow EC2 instance to initialize..."
-      sleep 60
-      echo "Running Ansible playbook..."
-      ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory playbook.yml --private-key ~/.ssh/id_rsa -u ec2-user
+      ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory ansible/playbook.yml --private-key ~/.ssh/id_rsa -u ec2-user
     EOT
   }
   
