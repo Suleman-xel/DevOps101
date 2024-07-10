@@ -147,7 +147,7 @@ resource "aws_instance" "DevOps_instance" {
 
   provisioner "local-exec" {
     command = <<EOT
-      echo "Current Working Directory: \$"
+      echo "Current Working Directory: \$(pwd)"
       echo "Listing files in dierectory:"
       ls -la
       echo "${self.public_ip}" >> inventory
