@@ -139,9 +139,9 @@ resource "aws_instance" "DevOps_instance" {
 
   provisioner "local-exec" {
     command = <<EOT
-      ls
+      
       echo "[all]\n${self.public_ip}" > inventory
-      ansible-playbook -i inventory ansible/playbook.yml playbook.yml --private-key ~/.ssh/id_rsa -u ec2-user
+      ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory ansible/playbook.yml --private-key ~/.ssh/id_rsa -u ec2-user
     EOT
   }
   

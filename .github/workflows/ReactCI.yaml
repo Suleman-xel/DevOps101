@@ -32,11 +32,6 @@ jobs:
       - name: Set up Terraform Environment
         uses: hashicorp/setup-terraform@v1
 
-
-      - name: Install Ansible
-        run: |
-          pip3 install ansible
-
       - name: Terraform Init
         working-directory: terraform
         run: terraform init
