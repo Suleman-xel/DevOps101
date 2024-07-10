@@ -24,7 +24,6 @@ jobs:
         run: |
           echo "${{ secrets.EC2_KEY_PAIR }}" | base64
 
-
       - name: Add SSH key to SSH agent
         run: |
           mkdir -p ~/.ssh

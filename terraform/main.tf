@@ -144,6 +144,7 @@ resource "aws_instance" "DevOps_instance" {
     Name = "DevOpsInstance"
   }
 
+
   provisioner "local-exec" {
     command = <<EOT
       echo "Current Working Directory: \$"
