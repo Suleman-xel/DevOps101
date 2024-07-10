@@ -68,7 +68,8 @@ resource "aws_route_table_association" "DevOps_rta" {
   route_table_id = aws_route_table.DevOps_rt.id
 }
 
-# Security gorup to define the rules
+
+# Inbound and Outbound Security
 resource "aws_security_group" "DevOps_sg" {
   name        = "DevOpsSecurityGroup"
   description = "Allow SSH and HTTP"
@@ -133,4 +134,9 @@ resource "aws_instance" "DevOps_instance" {
     Name = "DevOpsInstance"
   }
   
+}
+
+
+output "instance_public_ip" {
+  value = aws_instance.DevOps_instance.public_ip
 }
