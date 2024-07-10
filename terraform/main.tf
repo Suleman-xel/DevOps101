@@ -31,6 +31,7 @@ resource "aws_subnet" "DevOps_subnet" {
   vpc_id     = aws_vpc.DevOps_vpc.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "us-east-1a"
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "DevOpsSUBNET"
@@ -67,6 +68,38 @@ resource "aws_route_table_association" "DevOps_rta" {
   route_table_id = aws_route_table.DevOps_rt.id
 }
 
+# Security gorup to define the rules
+resource "aws_security_group" "DevOps_sg" {
+  name        = "DevOpsSecurityGroup"
+  description = "Allow SSH and HTTP"
+  vpc_id      = aws_vpc.DevOps_vpc.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "DevOpsSG"
+  }
+}
+
 
 
 # Fetching the AMI ID
@@ -87,12 +120,16 @@ data "aws_ami" "ubuntu" {
 }
 
 
+# Resources Destribution
 resource "aws_instance" "DevOps_instance" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.DevOps_subnet.id
   key_name      = "devopsKEY"
+  vpc_security_group_ids = [aws_security_group.DevOps_sg.id]
+  
   tags = {
     Name = "DevOpsInstance"
   }
+  
 }
