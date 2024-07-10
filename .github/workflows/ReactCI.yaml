@@ -52,7 +52,7 @@ jobs:
           # Optional, literal inventory file contents
           inventory: |
             [all]
-            184.73.146.186
+            ec2-184-73-146-186.compute-1.amazonaws.com
 
           # Optional, SSH known hosts file content
           # known_hosts: |
