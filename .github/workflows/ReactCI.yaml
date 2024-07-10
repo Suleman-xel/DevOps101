@@ -34,19 +34,19 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
-        working-directory: terraform
+        working-directory: ./terraform
         run: terraform init
 
       - name: Terraform Plan
-        working-directory: terraform
+        working-directory: ./terraform
         run: terraform plan -out=tfplan
 
       - name: Terraform Pull
-        working-directory: terraform
+        working-directory: ./terraform
         run: terraform state pull
 
       - name: Terraform Apply
-        working-directory: terraform
+        working-directory: ./terraform
         run: terraform apply -auto-approve
 
       
