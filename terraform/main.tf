@@ -10,13 +10,13 @@ terraform {
 
 
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 
 
 # Creating VPC
 resource "aws_vpc" "DevOps_vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.cidar_block
   enable_dns_support = true
   enable_dns_hostnames = true
 
@@ -29,8 +29,8 @@ resource "aws_vpc" "DevOps_vpc" {
 # Creating Subnets
 resource "aws_subnet" "DevOps_subnet" {
   vpc_id     = aws_vpc.DevOps_vpc.id
-  cidr_block = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
+  cidr_block = var.subnet
+  availability_zone = var.availability_zone
   map_public_ip_on_launch = true
 
   tags = {
@@ -69,6 +69,7 @@ resource "aws_route_table_association" "DevOps_rta" {
 }
 
 
+
 # Inbound and Outbound Security
 resource "aws_security_group" "DevOps_sg" {
   name        = "DevOpsSecurityGroup"
@@ -76,6 +77,7 @@ resource "aws_security_group" "DevOps_sg" {
   vpc_id      = aws_vpc.DevOps_vpc.id
 
   ingress {
+    description = "Allow access to SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -83,6 +85,7 @@ resource "aws_security_group" "DevOps_sg" {
   }
 
   ingress {
+    description = "Allow access to web"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -133,10 +136,14 @@ resource "aws_instance" "DevOps_instance" {
   tags = {
     Name = "DevOpsInstance"
   }
+
+  # provisioner "local-exec" {
+  #   command = "ansible-playbook -i '${self.public_ip},' --private-key ${var.private_key_path} ansible/playbook.yml"
+  # } 
   
 }
 
-
+# Outputing the Public IP of Machine
 output "instance_public_ip" {
   value = aws_instance.DevOps_instance.public_ip
 }
