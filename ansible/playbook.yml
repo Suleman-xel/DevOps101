@@ -21,44 +21,12 @@
         state: started
         enabled: yes
 
-    - name: Verify Docker installation
-      command: docker --version
-      register: docker_version
-
-    - name: Print Docker version
-      debug:
-        msg: "Docker version: {{ docker_version.stdout }}"
-
     - name: Install Node.js and npm
       shell: |
         curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
         sudo apt-get install -y nodejs
 
-    - name: Verify Node.js installation
-      command: node -v
-      register: node_version
-
-    - name: Print Node.js version
-      debug:
-        msg: "Node.js version: {{ node_version.stdout }}"
-
-    - name: Verify npm installation
-      command: npm -v
-      register: npm_version
-
-    - name: Print npm version
-      debug:
-        msg: "npm version: {{ npm_version.stdout }}"
-
     - name: Install PM2 globally
       npm:
         name: pm2
         global: yes
-
-    - name: Verify PM2 installation
-      command: pm2 -v
-      register: pm2_version
-
-    - name: Print PM2 version
-      debug:
-        msg: "PM2 version: {{ pm2_version.stdout }}"
