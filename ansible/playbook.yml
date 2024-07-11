@@ -42,6 +42,8 @@
     #   args:
     #     executable: /bin/bash
 
+    
+
     - name: Run Docker Compose to start Jenkins and SonarQube
       docker_compose:
         project_src: /home/ubuntu
