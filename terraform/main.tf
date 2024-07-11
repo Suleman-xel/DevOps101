@@ -145,7 +145,7 @@ data "aws_ami" "ubuntu" {
 # Resources Destribution
 resource "aws_instance" "DevOps_instance" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   subnet_id     = aws_subnet.DevOps_subnet.id
   key_name      = "devopsKEY"
   vpc_security_group_ids = [aws_security_group.DevOps_sg.id]
