@@ -53,10 +53,7 @@
         
 
     - name: Verify Docker Compose services are running
-      command: docker-compose ps
-      args:
-        chdir: /home/ubuntu
-      register: docker_compose_status
+      command: docker-compose -v
 
     - name: Output Docker Compose status
       debug:
