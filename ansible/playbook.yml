@@ -36,10 +36,17 @@
 
 
     - name: Run Docker Compose to start Jenkins and SonarQube
-      docker_compose:
-        project_src: /home/ubuntu
-        state: present
-        restarted: yes
+      ansible.builtin.shell:
+        cmd: docker-compose up -d
+        chdir: /home/ubuntu
+      args:
+        executable: /bin/bash
+
+    # - name: Run Docker Compose to start Jenkins and SonarQube
+    #   docker_compose:
+    #     project_src: /home/ubuntu
+    #     state: present
+    #     restarted: yes
         # build: yes
         
 
