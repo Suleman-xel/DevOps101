@@ -22,8 +22,44 @@
         enabled: yes
 
     - name: Install Node.js and npm
-      shell: |
-        curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-        sudo apt-get install -y nodejs
+      ansible.builtin.shell:
+        cmd: |
+          curl -sL https://deb.nodesource.com/setup_22.x | bash -
+          apt-get install -y nodejs
+        creates: /usr/bin/node
 
+    - name: Copy Docker Compose file for Jenkins and SonarQube
+      copy:
+        src: docker-compose.yml
+        dest: /home/ubuntu/docker-compose.yml
 
+    - name: Run Docker Compose to start Jenkins and SonarQube
+      docker_compose:
+        project_src: /home/ubuntu
+        state: present
+        restarted: yes
+        # build: yes
+        
+
+    - name: Verify Docker Compose services are running
+      command: docker-compose ps
+      args:
+        chdir: /home/ubuntu
+      register: docker_compose_status
+
+    - name: Output Docker Compose status
+      debug:
+        var: docker_compose_status.stdout_lines
+
+    - name: Verify Node.js and npm installation
+      command: "{{ item }}"
+      loop:
+        - node --version
+        - npm --version
+      register: node_npm_version
+      changed_when: false
+
+    - name: Display Node.js and npm versions
+      debug:
+        msg: "{{ item.stdout }}"
+      loop: "{{ node_npm_version.results }}"
